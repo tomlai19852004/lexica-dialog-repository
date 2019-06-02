@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 
 const before = (repository: CRUDRepository<any, any>) => {
   beforeAll(async () => {
-    (<any>mongoose).Promise = global.Promise;
-    mongoose.connect('mongodb://localhost/test');
+    (mongoose as any).Promise = global.Promise;
+    mongoose.connect('mongodb://localhost:27017/test');
     await mongoose.connection.dropDatabase();
     await repository.isIndexed();
   });

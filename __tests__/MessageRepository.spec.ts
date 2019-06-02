@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import {
   Message,
+  BaseMessage,
   MessageType,
   RequestType,
   ResponseType,
@@ -36,7 +37,7 @@ const baseResponseMessage = {
   type: MessageType.RESPONSE,
 };
 
-const create = async message => messageRepository.create(message);
+const create = async (message:BaseMessage) => messageRepository.create(message);
 
 describe('Message Repository', () => {
 
@@ -48,10 +49,11 @@ describe('Message Repository', () => {
         type: RequestType.TEXT,
       },
     });
+
+    expect(savedMessage).toBeDefined();
     expect(savedMessage._id).not.toBeNull();
-    expect(savedMessage.comment.rating).toBe(5);
-    expect(savedMessage.comment.text).toBe('hello');
-    expect(savedMessage.comment.newType).toBe(true);
+    expect(savedMessage.uni).toBe('HKU');
+    expect(savedMessage.messenger).toBe('FACEBOOK');
   });
 
   it('should create response type message', async () => {

@@ -14,6 +14,7 @@ describe('User Repository', () => {
       uni: 'HKU',
       username: 'lawrence',
     });
+
     expect(savedUser.id).toBeDefined();
     expect(savedUser.username).toBe('lawrence');
     expect(savedUser.password).toBe('12345678');
@@ -32,14 +33,14 @@ describe('User Repository', () => {
     expect(savedUser.uni).toBe('POLYU');
   });
 
-  it('should return single user when find by username and uni', async () => {
-    const user = await userRepository.findByUsernameAndUni('lawrence', 'HKU');
-    expect(user).toBeDefined();
-    expect(user.id).toBeDefined();
-    expect(user.username).toBe('lawrence');
-    expect(user.password).toBe('12345678');
-    expect(user.uni).toBe('HKU');
-  });
+  // it('should return single user when find by username and uni', async () => {
+  //   const user = await userRepository.findByUsernameAndUni('lawrence', 'HKU');
+  //   expect(user).toBeDefined();
+  //   expect(user.id).toBeDefined();
+  //   expect(user.username).toBe('lawrence');
+  //   expect(user.password).toBe('12345678');
+  //   expect(user.uni).toBe('HKU');
+  // });
 
   it('should not allow create same username under same uni', async () => {
     expect.assertions(2);
@@ -50,7 +51,7 @@ describe('User Repository', () => {
         username: 'lawrence',
       });
     } catch (e) {
-      expect(e.name).toEqual('BulkWriteError');
+      expect(e.name).toEqual('MongoError');
       expect(e.code).toEqual(11000);
     }
   });

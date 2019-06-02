@@ -20,14 +20,20 @@ describe('Request Response Mapping Repository', () => {
   });
 
   it('should soft delete request response mapping', async () => {
-    const saved = await requestResponseMappingRepository.findOne({});
-    const removed = await requestResponseMappingRepository.remove(saved);
-    const e1 = await requestResponseMappingRepository.findById(saved.id);
+    const saved = await requestResponseMappingRepository.findOne({ uni: "dev" });
+    expect(saved).not.toBeNull();
+    
+    if(saved){
+      const removed = await requestResponseMappingRepository.remove(saved);
+      const e1 = await requestResponseMappingRepository.findById(saved.id);
+      expect(removed.deleted).toBe(true);
+      expect(e1).toBeNull();
+    }
+    
     const e2 = await requestResponseMappingRepository.findOne({});
     const page = await requestResponseMappingRepository.findPage(
       new PageRequest(0, 10), {});
-    expect(removed.deleted).toBe(true);
-    expect(e1).toBeNull();
+    
     expect(e2).toBeNull();
     expect(page.elements).toHaveLength(0);
     expect(page.totalElements).toBe(0);
